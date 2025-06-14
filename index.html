@@ -1,8 +1,79 @@
 <!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pediakuu Payment</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="payment-card">
+      <h2>Halaman Pembayaran</h2>
+      <div class="payment-options">
+        <div class="payment-option" id="qris-payment">
+          <img
+            src="https://files.catbox.moe/3is3vh.jpg"
+            alt="QRIS Logo"
+          />
+          <button onclick="startQRISPayment()">Bayar dengan QRIS</button>
         </div>
-  <footer>&copy; 2025 Pediakuu Payment Kafh4you</footer>
+        <div class="payment-option" id="dana-payment">
+          <img
+            src="https://files.catbox.moe/6jtvll.png"
+            alt="DANA Logo"
+          />
+          <button onclick="startDanaPayment()">Bayar dengan DANA</button>
+        </div>
+        <div class="payment-option" id="gopay-payment">
+          <img
+            src="https://files.catbox.moe/7nz86g.jpg"
+            alt="GOPAY Logo"
+          />
+          <button onclick="startGopayPayment()">Bayar dengan GOPAY</button>
+        </div>
+        <div class="payment-option" id="ovo-payment">
+          <img
+            src="https://files.catbox.moe/9ts849.jpg"
+            alt="OVO Logo"
+          />
+          <button onclick="startOvoPayment()">Bayar dengan OVO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>&copy; 2025 Pediakuu Payment Gateway</footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
+function startQRISPayment() {
+    // Simulate payment logic for QRIS
+    alert("Redirecting to QRIS payment...");
+    // You can replace this with actual payment logic
+    window.location.href = "payqris.html"; // Change to actual QRIS payment URL
+}
+
+function startDanaPayment() {
+    // Simulate payment logic for DANA
+    alert("Redirecting to DANA payment...");
+    // You can replace this with actual payment logic
+    window.location.href = "paydana.html"; // Change to actual DANA payment URL
+}
+
+function startGopayPayment() {
+    // Simulate payment logic for GOPAY
+    alert("Redirecting to GOPAY payment...");
+    // You can replace this with actual payment logic
+    window.location.href = "paygopay.html"; // Change to actual GOPAY payment URL
+}
+
+function startOvoPayment() {
+    // Simulate payment logic for OVO
+    alert("Redirecting to GOPAY payment...");
+    // You can replace this with actual payment logic
+    window.location.href = "payovo.html"; // Change to actual OVO payment URL
+}
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -136,7 +207,7 @@
     <div class="note">Pastikan nominal sudah sesuai sebelum melakukan pembayaran.</div>
   </div>
 
-  <footer>&copy; 2025 DANA Payment Kafh4you Store</footer>
+  <footer>&copy; 2025 DANA Payment KAFH - Jexploit</footer>
 
   <script>
     function copyDANA() {
@@ -281,7 +352,7 @@
     <div class="note">Pastikan nominal sudah sesuai sebelum melakukan pembayaran.</div>
   </div>
 
-  <footer>&copy; 2025 GOPAY Payment Kafh4you Store</footer>
+  <footer>&copy; 2025 GOPAY Payment KAFH - Jexploit</footer>
 
   <script>
     function copyGOPAY() {
@@ -292,7 +363,8 @@
     }
   </script>
 </body>
-</html><!DOCTYPE html>
+</html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -425,7 +497,7 @@
     <div class="note">Pastikan nominal sudah sesuai sebelum melakukan pembayaran.</div>
   </div>
 
-  <footer>&copy; 2025 GOPAY Payment Kafh4you Store</footer>
+  <footer>&copy; 2025 GOPAY Payment Gateway - Jexploit</footer>
 
   <script>
     function copyOVO() {
@@ -576,6 +648,6 @@
     <img src="https://files.catbox.moe/s5d09q.jpg" alt="QRIS Image" class="qris-img" />
     <div class="note">Pastikan nominal sudah sesuai sebelum melakukan pembayaran.</div>
   </div>
-  <footer>&copy; 2025 QRIS Payment Kafh4you Store</footer>
+  <footer>&copy; 2025 QRIS Payment KAFH - Jexploit</footer>
 </body>
 </html>
